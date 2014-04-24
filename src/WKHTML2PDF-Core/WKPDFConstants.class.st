@@ -1,0 +1,31 @@
+"
+This pool includes constants
+"
+Class {
+	#name : #WKPDFConstants,
+	#superclass : #SharedPool,
+	#classVars : [
+		'wkhtmltopdf_converter',
+		'wkhtmltopdf_global_settings',
+		'wkhtmltopdf_object_settings'
+	],
+	#category : #'WKHTML2PDF-Core-External-Structs'
+}
+
+{ #category : #initialization }
+WKPDFConstants class >> initTypes [
+
+	wkhtmltopdf_global_settings := #WKPDFGlobalSettings.
+	wkhtmltopdf_object_settings := #WKPDFObjectSettings.
+	wkhtmltopdf_converter := #WKPDFConverter
+]
+
+{ #category : #initialization }
+WKPDFConstants class >> initialize [ 
+	"Initializes the receiver class
+	
+		self initialize
+	"
+	
+	self initTypes
+]
