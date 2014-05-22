@@ -50,18 +50,36 @@ WKPDFLibrary class >> createObjectSettings [
 	 ^NBFFICallout stdcall: #(wkhtmltopdf_object_settings* wkhtmltopdf_create_object_settings()) module: 'wkhtmltox.dll' 
 ]
 
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> deinit [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_deinit()) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> destroyConverter: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(void wkhtmltopdf_destroy_converter(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+]
+
 { #category : #examples }
 WKPDFLibrary class >> example [
 
 	|s o c|
-	WKPDFLibrary init: 0.
-	s := WKPDFLibrary createGlobalSettings.
-	WKPDFLibrary setGlobalSetting: 'out' to: 'c:\temp\test.pdf' in: s.
-	o := WKPDFLibrary createObjectSettings.
-	WKPDFLibrary setObjectSetting: 'page' to: 'http://www.google.de/' in: o.
-	c := WKPDFLibrary createConverterWithGlobalSettings: s.
-	WKPDFLibrary addObject: o to: c.
-	WKPDFLibrary convert: c.
+	self init: 0.
+	s := self createGlobalSettings.
+	self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: s.
+	o := self createObjectSettings.
+	self setObjectSetting: 'page' to: 'http://www.google.de' in: o.
+	c := self createConverterWithGlobalSettings: s.
+	self addObject: o to: c.
+	self convert: c.
+	self destroyConverter: c.
+	self deinit
 ]
 
 { #category : #'private - api calls' }
