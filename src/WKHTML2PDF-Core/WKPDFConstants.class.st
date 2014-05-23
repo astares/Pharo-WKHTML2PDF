@@ -7,7 +7,10 @@ Class {
 	#classVars : [
 		'wkhtmltopdf_converter',
 		'wkhtmltopdf_global_settings',
-		'wkhtmltopdf_object_settings'
+		'wkhtmltopdf_int_callback',
+		'wkhtmltopdf_object_settings',
+		'wkhtmltopdf_str_callback',
+		'wkhtmltopdf_void_callback'
 	],
 	#category : #'WKHTML2PDF-Core-External-Structs'
 }
@@ -17,7 +20,10 @@ WKPDFConstants class >> initTypes [
 
 	wkhtmltopdf_global_settings := #WKPDFGlobalSettings.
 	wkhtmltopdf_object_settings := #WKPDFObjectSettings.
-	wkhtmltopdf_converter := #WKPDFConverter
+	wkhtmltopdf_converter := #WKPDFConverter.
+	wkhtmltopdf_str_callback := #WKPDFStringCallback.
+	wkhtmltopdf_void_callback := #WKPDFVoidCallback.
+	wkhtmltopdf_int_callback := #WKPDFIntCallback
 ]
 
 { #category : #initialization }

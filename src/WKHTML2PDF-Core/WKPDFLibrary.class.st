@@ -1,5 +1,51 @@
 "
-Represents the Webkit HTML to PDF library
+/* 
+ * C example
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <stdbool.h>
+
+extern ""C"" {
+#include <wkhtmltox\pdf.h>
+}
+ 
+int main(int argc, char** argv) {
+         
+        wkhtmltopdf_global_settings* gs;
+	wkhtmltopdf_object_settings* os;
+	wkhtmltopdf_converter* c;
+        
+        int a = wkhtmltopdf_init(false);
+	printf(""%i"",a);
+        
+	gs = wkhtmltopdf_create_global_settings();
+	wkhtmltopdf_set_global_setting(gs, ""out"", ""c:\\temp\\mia9.pdf"");
+	
+	os = wkhtmltopdf_create_object_settings();
+	wkhtmltopdf_set_object_setting(os, ""page"", ""http://www.google.de"");
+	
+	c = wkhtmltopdf_create_converter(gs);
+       
+         wkhtmltopdf_add_object(c, os, NULL);
+         
+        
+        if( !wkhtmltopdf_convert(c) )
+		fprintf(stderr, ""Convertion failed!"");
+		
+	printf(""httpErrorCode: %d\n"", wkhtmltopdf_http_error_code(c));
+	
+	wkhtmltopdf_destroy_converter(c);
+	
+	wkhtmltopdf_deinit();
+	
+	 
+	return 0;
+}
+
+
 "
 Class {
 	#name : #WKPDFLibrary,
@@ -69,17 +115,37 @@ WKPDFLibrary class >> destroyConverter: converter [
 { #category : #examples }
 WKPDFLibrary class >> example [
 
-	|gs os c|
+	|gs os c cb phaseCallback |
 	self init: 0.
 	gs := self createGlobalSettings.
-	self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: gs.
+	self setGlobalSetting: 'out' to: 'c:\temp\mia8.pdf' in: gs.
 	os := self createObjectSettings.
-	self setObjectSetting: 'page' to: 'http://www.google.de' in: os.
+	self setObjectSetting: 'page' to: 'http:////www.google.de' in: os.
 	c := self createConverter: gs.
+	
+	cb := WKPDFStringCallback on: [:con :m | Transcript show: m readString.].		
+	self setErrorCallback: cb onConverter: c.
+	self setWarningCallback: cb onConverter: c.
+	
+	 phaseCallback := WKPDFVoidCallback on: [:con |
+		Transcript show: (self getCurrentPhase: con) asString.
+	].
+      self setPhaseChangedCallback: phaseCallback onConverter: c. 
+	
 	self addObject: c to: os.
 	self convert: c.
 	self destroyConverter: c.
 	self deinit
+	
+ 
+]
+
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> getCurrentPhase: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(int* wkhtmltopdf_current_phase(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api calls' }
@@ -88,6 +154,14 @@ WKPDFLibrary class >> init: use_graphics [
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_init(int use_graphics)) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> setErrorCallback: cb onConverter: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_set_error_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api calls' }
@@ -104,4 +178,20 @@ WKPDFLibrary class >> setObjectSetting: aName to: value in: settings [
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings* settings, char* aName, char* value)) module: 'wkhtmltox.dll' 	
+]
+
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> setPhaseChangedCallback: cb onConverter: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_set_phase_changed_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_void_callback cb)) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #'private - api calls' }
+WKPDFLibrary class >> setWarningCallback: cb onConverter: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_set_warning_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
 ]
