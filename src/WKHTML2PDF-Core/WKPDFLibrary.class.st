@@ -11,11 +11,11 @@ Class {
 }
 
 { #category : #'private - api calls' }
-WKPDFLibrary class >> addObject: settings to: converter [
+WKPDFLibrary class >> addObject: converter to: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
-	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' 
+	 ^NBFFICallout stdcall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api calls' }
@@ -27,7 +27,7 @@ WKPDFLibrary class >> convert: converter [
 ]
 
 { #category : #'private - api calls' }
-WKPDFLibrary class >> createConverterWithGlobalSettings: settings [
+WKPDFLibrary class >> createConverter: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
@@ -69,25 +69,25 @@ WKPDFLibrary class >> destroyConverter: converter [
 { #category : #examples }
 WKPDFLibrary class >> example [
 
-	|s o c|
+	|gs os c|
 	self init: 0.
-	s := self createGlobalSettings.
-	self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: s.
-	o := self createObjectSettings.
-	self setObjectSetting: 'page' to: 'http://www.google.de' in: o.
-	c := self createConverterWithGlobalSettings: s.
-	self addObject: o to: c.
+	gs := self createGlobalSettings.
+	self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: gs.
+	os := self createObjectSettings.
+	self setObjectSetting: 'page' to: 'http://www.google.de' in: os.
+	c := self createConverter: gs.
+	self addObject: c to: os.
 	self convert: c.
 	self destroyConverter: c.
 	self deinit
 ]
 
 { #category : #'private - api calls' }
-WKPDFLibrary class >> init: mode [
+WKPDFLibrary class >> init: use_graphics [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
-	 ^NBFFICallout stdcall: #(int wkhtmltopdf_init(int mode)) module: 'wkhtmltox.dll' 
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_init(int use_graphics)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api calls' }
