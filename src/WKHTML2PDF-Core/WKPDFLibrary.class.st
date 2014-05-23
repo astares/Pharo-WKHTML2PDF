@@ -1,51 +1,5 @@
 "
-/* 
- * C example
- */
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <stdbool.h>
-
-extern ""C"" {
-#include <wkhtmltox\pdf.h>
-}
- 
-int main(int argc, char** argv) {
-         
-        wkhtmltopdf_global_settings* gs;
-	wkhtmltopdf_object_settings* os;
-	wkhtmltopdf_converter* c;
-        
-        int a = wkhtmltopdf_init(false);
-	printf(""%i"",a);
-        
-	gs = wkhtmltopdf_create_global_settings();
-	wkhtmltopdf_set_global_setting(gs, ""out"", ""c:\\temp\\mia9.pdf"");
-	
-	os = wkhtmltopdf_create_object_settings();
-	wkhtmltopdf_set_object_setting(os, ""page"", ""http://www.google.de"");
-	
-	c = wkhtmltopdf_create_converter(gs);
-       
-         wkhtmltopdf_add_object(c, os, NULL);
-         
-        
-        if( !wkhtmltopdf_convert(c) )
-		fprintf(stderr, ""Convertion failed!"");
-		
-	printf(""httpErrorCode: %d\n"", wkhtmltopdf_http_error_code(c));
-	
-	wkhtmltopdf_destroy_converter(c);
-	
-	wkhtmltopdf_deinit();
-	
-	 
-	return 0;
-}
-
-
+Represents the WKPDF shared library
 "
 Class {
 	#name : #WKPDFLibrary,
@@ -53,10 +7,10 @@ Class {
 	#pools : [
 		'WKPDFConstants'
 	],
-	#category : #'WKHTML2PDF-Core-External'
+	#category : #'WKHTML2PDF-Core-Component'
 }
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api' }
 WKPDFLibrary class >> addObject: converter to: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -64,7 +18,7 @@ WKPDFLibrary class >> addObject: converter to: settings [
 	 ^NBFFICallout stdcall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' options: #( - optCoerceNilToNull )
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api' }
 WKPDFLibrary class >> convert: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -72,7 +26,31 @@ WKPDFLibrary class >> convert: converter [
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_convert(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #conversion }
+WKPDFLibrary class >> convert: url toFile: fileName [
+
+	| globalSettings objectSettings converter  conversionResult errorCode |
+
+	self init: 0.
+	globalSettings := self createGlobalSettings.
+	self setGlobalSetting: 'out' to: fileName in: globalSettings.
+	objectSettings := self createObjectSettings.
+	self setObjectSetting: 'page' to: url in: objectSettings.
+	converter := self createConverter: globalSettings.
+	self addObject: converter to: objectSettings.
+	conversionResult := self convert: converter.
+	conversionResult = 1 ifFalse: [ errorCode := self getHTTPErrorCode: converter ].
+	self destroyConverter: converter.
+	self deinit.
+	
+	^conversionResult = 1 
+		ifTrue: [ true ]
+		ifFalse: [ errorCode ]
+
+
+]
+
+{ #category : #'private - api' }
 WKPDFLibrary class >> createConverter: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -80,7 +58,7 @@ WKPDFLibrary class >> createConverter: settings [
 	 ^NBFFICallout stdcall: #(wkhtmltopdf_converter* wkhtmltopdf_create_converter(wkhtmltopdf_global_settings* settings)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - settings' }
 WKPDFLibrary class >> createGlobalSettings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -88,7 +66,7 @@ WKPDFLibrary class >> createGlobalSettings [
 	 ^NBFFICallout stdcall: #(wkhtmltopdf_global_settings* wkhtmltopdf_create_global_settings()) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - settings' }
 WKPDFLibrary class >> createObjectSettings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -96,7 +74,7 @@ WKPDFLibrary class >> createObjectSettings [
 	 ^NBFFICallout stdcall: #(wkhtmltopdf_object_settings* wkhtmltopdf_create_object_settings()) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - initialization' }
 WKPDFLibrary class >> deinit [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -104,7 +82,7 @@ WKPDFLibrary class >> deinit [
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_deinit()) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api' }
 WKPDFLibrary class >> destroyConverter: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -115,44 +93,61 @@ WKPDFLibrary class >> destroyConverter: converter [
 { #category : #examples }
 WKPDFLibrary class >> example [
 
-	|gs os c cb phaseCallback x |
-	self init: 0.
-	gs := self createGlobalSettings.
-	x := self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: gs.
- 	Transcript show: x.
-	os := self createObjectSettings.
-	
-      "The following call failed and returns 0 instead of 1"
-	x := self setObjectSetting: 'page' to: 'http://www.google.de' in: os.
-	Transcript show: x.
-	c := self createConverter: gs.
-	
-	cb := WKPDFStringCallback on: [:con :m | Transcript show: m readString.].		
-	self setErrorCallback: cb onConverter: c.
-	self setWarningCallback: cb onConverter: c.
-	
-	 phaseCallback := WKPDFVoidCallback on: [:con |
-		Transcript show: (self getCurrentPhase: con) asString.
-	].
-      self setPhaseChangedCallback: phaseCallback onConverter: c. 
-	
-	self addObject: c to: os.
-	self convert: c.
-	self destroyConverter: c.
-	self deinit
-	
- 
+	self convert: 'http://www.pharo.org' toFile:  'c:\temp\test5.pdf'
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #examples }
+WKPDFLibrary class >> exampleWithCallbacks [
+
+	| globalSettings objectSettings converter cb phaseCallback |
+	self init: 0.
+	globalSettings := self createGlobalSettings.
+	self setGlobalSetting: 'out' to: 'c:\temp\pharo.pdf' in: globalSettings.
+	objectSettings := self createObjectSettings.
+	self setObjectSetting: 'page' to: 'http://www.pharo.org' in: objectSettings.
+	converter := self createConverter: globalSettings.
+	
+	cb := WKPDFStringCallback on: [ :con :m | Transcript show: m readString; flush ].
+		self setErrorCallback: cb onConverter: converter.
+		self setWarningCallback: cb onConverter: converter.
+	
+	phaseCallback := WKPDFVoidCallback on: [ :con | 
+							|description|
+							description := self getPhaseDescription: con  forPhase: (self getCurrentPhase: con).			
+							Transcript show: description; cr; flush ].
+						
+	self setPhaseChangedCallback: phaseCallback onConverter: converter.
+	self addObject: converter to: objectSettings.
+	self convert: converter.
+	self destroyConverter: converter.
+	self deinit
+]
+
+{ #category : #'private - api - accessing' }
 WKPDFLibrary class >> getCurrentPhase: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
-	 ^NBFFICallout stdcall: #(int* wkhtmltopdf_current_phase(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_current_phase(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - accessing' }
+WKPDFLibrary class >> getHTTPErrorCode: converter [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_http_error_code(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #'private - api - accessing' }
+WKPDFLibrary class >> getPhaseDescription: converter forPhase: phase [
+
+	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
+	
+	 ^NBFFICallout stdcall: #(String wkhtmltopdf_phase_description(wkhtmltopdf_converter* converter, int phase)) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #'private - api - initialization' }
 WKPDFLibrary class >> init: use_graphics [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -160,7 +155,7 @@ WKPDFLibrary class >> init: use_graphics [
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_init(int use_graphics)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - callbacks' }
 WKPDFLibrary class >> setErrorCallback: cb onConverter: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -168,23 +163,23 @@ WKPDFLibrary class >> setErrorCallback: cb onConverter: converter [
 	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_set_error_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - settings' }
 WKPDFLibrary class >> setGlobalSetting: aName to: value in: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
-	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_global_setting(wkhtmltopdf_global_settings* settings, char* aName, char* value)) module: 'wkhtmltox.dll' 	
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_global_setting(wkhtmltopdf_global_settings* settings, String aName, String value)) module: 'wkhtmltox.dll' 	
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - settings' }
 WKPDFLibrary class >> setObjectSetting: aName to: value in: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 
-	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings* settings, char* aName, char* value)) module: 'wkhtmltox.dll' 	
+	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings* settings, String aName, String value)) module: 'wkhtmltox.dll' 	
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - callbacks' }
 WKPDFLibrary class >> setPhaseChangedCallback: cb onConverter: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
@@ -192,7 +187,7 @@ WKPDFLibrary class >> setPhaseChangedCallback: cb onConverter: converter [
 	 ^NBFFICallout stdcall: #(void* wkhtmltopdf_set_phase_changed_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_void_callback cb)) module: 'wkhtmltox.dll' 
 ]
 
-{ #category : #'private - api calls' }
+{ #category : #'private - api - callbacks' }
 WKPDFLibrary class >> setWarningCallback: cb onConverter: converter [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>

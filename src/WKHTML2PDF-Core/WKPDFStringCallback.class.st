@@ -7,13 +7,13 @@ Class {
 	#pools : [
 		'WKPDFConstants'
 	],
-	#category : #'WKHTML2PDF-Core-External-Callbacks'
+	#category : #'WKHTML2PDF-Core-Component-Callbacks'
 }
 
 { #category : #accessing }
 WKPDFStringCallback class >> fnSpec [
 	 
-	^ #(void (WKPDFConverter* converter, char* str))
+	^ #(void (WKPDFConverter* converter, String str))
 
 
 ]

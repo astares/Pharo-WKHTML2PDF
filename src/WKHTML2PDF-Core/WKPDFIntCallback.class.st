@@ -7,7 +7,7 @@ Class {
 	#pools : [
 		'WKPDFConstants'
 	],
-	#category : #'WKHTML2PDF-Core-External-Callbacks'
+	#category : #'WKHTML2PDF-Core-Component-Callbacks'
 }
 
 { #category : #accessing }

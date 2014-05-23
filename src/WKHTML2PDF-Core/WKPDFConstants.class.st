@@ -1,5 +1,5 @@
 "
-This pool includes constants
+This pool includes constants from pdf.h
 "
 Class {
 	#name : #WKPDFConstants,
@@ -12,10 +12,10 @@ Class {
 		'wkhtmltopdf_str_callback',
 		'wkhtmltopdf_void_callback'
 	],
-	#category : #'WKHTML2PDF-Core-External-Structs'
+	#category : #'WKHTML2PDF-Core-Component-Structs'
 }
 
-{ #category : #initialization }
+{ #category : #'private - initialization' }
 WKPDFConstants class >> initTypes [
 
 	wkhtmltopdf_global_settings := #WKPDFGlobalSettings.

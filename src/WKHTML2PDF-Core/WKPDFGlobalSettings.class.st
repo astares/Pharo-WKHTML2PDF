@@ -1,8 +1,8 @@
 "
-Wrapper for struct wkhtmltopdf_global_settings
+Wrapper for struct wkhtmltopdf_global_settings from pdf.h
 "
 Class {
 	#name : #WKPDFGlobalSettings,
 	#superclass : #NBExternalStructure,
-	#category : #'WKHTML2PDF-Core-External-Structs'
+	#category : #'WKHTML2PDF-Core-Component-Structs'
 }
