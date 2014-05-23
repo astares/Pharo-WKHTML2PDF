@@ -115,12 +115,16 @@ WKPDFLibrary class >> destroyConverter: converter [
 { #category : #examples }
 WKPDFLibrary class >> example [
 
-	|gs os c cb phaseCallback |
+	|gs os c cb phaseCallback x |
 	self init: 0.
 	gs := self createGlobalSettings.
-	self setGlobalSetting: 'out' to: 'c:\temp\mia8.pdf' in: gs.
+	x := self setGlobalSetting: 'out' to: 'c:\\temp\\mia8.pdf' in: gs.
+ 	Transcript show: x.
 	os := self createObjectSettings.
-	self setObjectSetting: 'page' to: 'http:////www.google.de' in: os.
+	
+      "The following call failed and returns 0 instead of 1"
+	x := self setObjectSetting: 'page' to: 'http://www.google.de' in: os.
+	Transcript show: x.
 	c := self createConverter: gs.
 	
 	cb := WKPDFStringCallback on: [:con :m | Transcript show: m readString.].		
@@ -176,7 +180,7 @@ WKPDFLibrary class >> setGlobalSetting: aName to: value in: settings [
 WKPDFLibrary class >> setObjectSetting: aName to: value in: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
-	
+
 	 ^NBFFICallout stdcall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings* settings, char* aName, char* value)) module: 'wkhtmltox.dll' 	
 ]
 
