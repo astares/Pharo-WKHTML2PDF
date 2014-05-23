@@ -15,7 +15,7 @@ WKPDFLibrary class >> addObject: converter to: settings [
 
 	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
 	
-	 ^NBFFICallout stdcall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' 
+	 ^NBFFICallout stdcall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' options: #( - optCoerceNilToNull )
 ]
 
 { #category : #'private - api calls' }
