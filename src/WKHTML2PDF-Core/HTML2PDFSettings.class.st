@@ -13,13 +13,18 @@ Class {
 { #category : #initialization }
 HTML2PDFSettings >> addOption: option value: aValue [
 
-	self options at: 'collate' put: aValue
+	self options at: option put: aValue
 ]
 
 { #category : #initialization }
 HTML2PDFSettings >> addSingleOption: option [
 
-	self options at: 'collate' put: nil
+	self options at: option put: nil
+]
+
+{ #category : #accessing }
+HTML2PDFSettings >> hasOption: aString [ 
+	^self options includesKey: aString
 ]
 
 { #category : #initialization }
@@ -32,4 +37,9 @@ HTML2PDFSettings >> initialize [
 HTML2PDFSettings >> options [
 
 	^options
+]
+
+{ #category : #accessing }
+HTML2PDFSettings >> valueForOption: aString [ 
+	^self options at: aString ifAbsent: nil
 ]
