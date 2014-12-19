@@ -7,7 +7,7 @@ Class {
 	#pools : [
 		'WKPDFConstants'
 	],
-	#category : #'WKHTML2PDF-Core-Component'
+	#category : #'WKHTML2PDF-Core-Engines-Library'
 }
 
 { #category : #'private - api' }
