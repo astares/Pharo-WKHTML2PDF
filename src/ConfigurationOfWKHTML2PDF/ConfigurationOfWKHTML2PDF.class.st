@@ -3,7 +3,7 @@
 
 ## Project info
 
-The ""WKHTML2PDF for Pharo"" is a project to provide the possibility to use the WKHTML2PDF project from Pharo. It allows you to convert HTML into PDF documents.
+The ""WKHTML2PDF for Pharo"" is a project to provide the possibility to use the [WKHTML2PDF project](http://wkhtmltopdf.org/) from [Pharo](http://www.pharo.org). It allows you to convert HTML into PDF documents.
 
 With this tool you can provide easy portable printing for your Pharo based applications.
 
@@ -16,6 +16,10 @@ WKHTML2PDF is licensed under MIT License.
 
 ## Installation
 
+### Install WKHTML2PDF
+Please check out [http://wkhtmltopdf.org](http://wkhtmltopdf.org)/ to install the necessary software on your machine. Note that the library/executable should be accessible to Pharo. Often it is enough by providing the binary files next to the Pharo VM executable.
+
+### Install in Pharo
 You can access the project from the Pharo configuration browser. Just select *""Tools""* -> *""Configuration Browser""* from the world menu, enter ""WKHTML2PDF"" and install the stable version. 
 
 Alternatively to install the packages manually into your Pharo image just evaluate:
@@ -41,7 +45,7 @@ or
 
 	HTML2PDFConverter useLibrary. 
 
-The library is the default.
+The executable is the default.
 
 ### Converting
 Now you can convert an HTML file or an URL into a PDF document:
