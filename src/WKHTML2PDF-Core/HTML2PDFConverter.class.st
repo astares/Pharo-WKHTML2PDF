@@ -33,7 +33,7 @@ HTML2PDFConverter class >> example [
 { #category : #initialization }
 HTML2PDFConverter class >> initialize [
 
-	self useLibrary 
+	self useExecutable 
 ]
 
 { #category : #engines }
