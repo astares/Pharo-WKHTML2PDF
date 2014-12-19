@@ -183,10 +183,34 @@ ConfigurationOfWKHTML2PDF >> baseline01: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
 		spec project: 'OSProcess' with: [
 				spec
 					className: #ConfigurationOfOSProcess;
 					versionString: #'stable';
+					repository: 'http://www.squeaksource.com/OSProcess' ].
+		spec 
+			package: 'WKHTML2PDF-Core';
+			package: 'WKHTML2PDF-Tests-Core' with: [
+				spec requires: #('WKHTML2PDF-Core' ). ].
+		spec 
+			group: 'default' with: #('Core' 'Tests' );
+			group: 'Core' with: #('WKHTML2PDF-Core' );
+			group: 'Tests' with: #('WKHTML2PDF-Tests-Core' ). ].
+
+]
+
+{ #category : #baselines }
+ConfigurationOfWKHTML2PDF >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
+		spec project: 'OSProcess' with: [
+				spec
+					className: #ConfigurationOfOSProcess;
+					versionString: '4.5.12';
 					repository: 'http://www.squeaksource.com/OSProcess' ].
 		spec 
 			package: 'WKHTML2PDF-Core';
@@ -211,7 +235,7 @@ ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 ConfigurationOfWKHTML2PDF >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.2-baseline'.
 
 ]
 
