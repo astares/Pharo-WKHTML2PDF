@@ -190,30 +190,8 @@ ConfigurationOfWKHTML2PDF >> baseline01: spec [
 					versionString: #'stable';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
 		spec 
-			package: 'WKHTML2PDF-Core';
-			package: 'WKHTML2PDF-Tests-Core' with: [
-				spec requires: #('WKHTML2PDF-Core' ). ].
-		spec 
-			group: 'default' with: #('Core' 'Tests' );
-			group: 'Core' with: #('WKHTML2PDF-Core' );
-			group: 'Tests' with: #('WKHTML2PDF-Tests-Core' ). ].
-
-]
-
-{ #category : #baselines }
-ConfigurationOfWKHTML2PDF >> baseline02: spec [
-	<version: '0.2-baseline'>
-
-	spec for: #'common' do: [
-		spec blessing: #'baseline'.
-		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
-		spec project: 'OSProcess' with: [
-				spec
-					className: #ConfigurationOfOSProcess;
-					versionString: #'stable';
-					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
-		spec 
-			package: 'WKHTML2PDF-Core';
+			package: 'WKHTML2PDF-Core' with: [
+				spec requires: #('OSProcess' ). ];
 			package: 'WKHTML2PDF-Tests-Core' with: [
 				spec requires: #('WKHTML2PDF-Core' ). ].
 		spec 
@@ -235,7 +213,7 @@ ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 ConfigurationOfWKHTML2PDF >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.2-baseline'.
+	spec for: #'common' version: '0.1-baseline'.
 
 ]
 
@@ -268,8 +246,8 @@ ConfigurationOfWKHTML2PDF >> version10: spec [
 		spec blessing: #'stable'.
 		spec description: 'version 1.0'.
 		spec author: 'TorstenBergmann'.
-		spec timestamp: '12/19/2014 10:07'.
-		spec project: 'OSProcess' with: #'stable'.
+		spec timestamp: '12/19/2014 10:39'.
+		spec project: 'OSProcess' with: '4.5.12'.
 		spec 
 			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.14';
 			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
