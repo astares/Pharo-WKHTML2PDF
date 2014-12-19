@@ -188,7 +188,7 @@ ConfigurationOfWKHTML2PDF >> baseline01: spec [
 				spec
 					className: #ConfigurationOfOSProcess;
 					versionString: #'stable';
-					repository: 'http://www.squeaksource.com/OSProcess' ].
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
 		spec 
 			package: 'WKHTML2PDF-Core';
 			package: 'WKHTML2PDF-Tests-Core' with: [
@@ -210,8 +210,8 @@ ConfigurationOfWKHTML2PDF >> baseline02: spec [
 		spec project: 'OSProcess' with: [
 				spec
 					className: #ConfigurationOfOSProcess;
-					versionString: '4.5.12';
-					repository: 'http://www.squeaksource.com/OSProcess' ].
+					versionString: #'stable';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
 		spec 
 			package: 'WKHTML2PDF-Core';
 			package: 'WKHTML2PDF-Tests-Core' with: [
@@ -269,7 +269,7 @@ ConfigurationOfWKHTML2PDF >> version10: spec [
 		spec description: 'version 1.0'.
 		spec author: 'TorstenBergmann'.
 		spec timestamp: '12/19/2014 10:07'.
-		spec project: 'OSProcess' with: '4.5.12'.
+		spec project: 'OSProcess' with: #'stable'.
 		spec 
 			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.14';
 			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
