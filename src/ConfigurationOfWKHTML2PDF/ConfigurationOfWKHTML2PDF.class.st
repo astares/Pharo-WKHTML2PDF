@@ -98,6 +98,50 @@ ConfigurationOfWKHTML2PDF class >> baseConfigurationClassIfAbsent: aBlock [
 
 ]
 
+{ #category : #catalog }
+ConfigurationOfWKHTML2PDF class >> catalogChangeLog [
+	"Returns a paragraph describing the most important changes in the configuration class."
+	^ '2.0 is current version for Pharo 4 and 5'
+]
+
+{ #category : #catalog }
+ConfigurationOfWKHTML2PDF class >> catalogContactInfo [
+	"Returns a paragraph describing contact information such as email, mailing lists and website."
+	^ 'You can contact the author on the Pharo-dev mailing list'
+]
+
+{ #category : #catalog }
+ConfigurationOfWKHTML2PDF class >> catalogDescription [
+	"Returns a paragraph describing the project"
+	^ 'Render HTML into PDF and various image formats using the (external) Qt WebKit rendering engine directly from Pharo.'
+]
+
+{ #category : #catalog }
+ConfigurationOfWKHTML2PDF class >> catalogKeyClassesAndExample [
+	"Returns a paragraph or more describing the key classes of your project. You can use Pillar/Pier syntax to layout out the text i.e., ==Code== and - for bullet."
+	^ 'Please check out http://wkhtmltopdf.org/ to install the necessary software on your machine. Note that the library/executable should be accessible to Pharo. Often it is enough by providing the binary files next to the Pharo VM executable.
+
+First select the engine:
+	
+	HTML2PDFConverter useExecutable. 
+
+or 
+
+  HTML2PDFConverter useLibrary. 
+
+and then convert:
+
+  HTML2PDFConverter 
+        convert: ''http://www.pharo.org''
+        toFile: ''pharo.pdf'''
+]
+
+{ #category : #catalog }
+ConfigurationOfWKHTML2PDF class >> catalogKeywords [
+	"Returns an array of symbols"
+	^ #(pdf html reporting) 
+]
+
 { #category : #private }
 ConfigurationOfWKHTML2PDF class >> ensureMetacello [
 
@@ -201,6 +245,54 @@ ConfigurationOfWKHTML2PDF >> baseline01: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfWKHTML2PDF >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
+		spec project: 'OSProcess' with: [
+				spec
+					className: #ConfigurationOfOSProcess;
+					versionString: #'stable';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+		spec 
+			package: 'WKHTML2PDF-Core' with: [
+				spec requires: #('OSProcess' ). ];
+			package: 'WKHTML2PDF-Tests-Core' with: [
+				spec requires: #('WKHTML2PDF-Core' ). ].
+		spec 
+			group: 'default' with: #('Core' 'Tests' );
+			group: 'Core' with: #('WKHTML2PDF-Core' );
+			group: 'Tests' with: #('WKHTML2PDF-Tests-Core' ). ].
+
+]
+
+{ #category : #baselines }
+ConfigurationOfWKHTML2PDF >> baseline03: spec [
+	<version: '0.3-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
+		spec project: 'OSProcess' with: [
+				spec
+					className: #ConfigurationOfOSProcess;
+					versionString: #'stable';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+		spec 
+			package: 'WKHTML2PDF-Core' with: [
+				spec requires: #('OSProcess' ). ];
+			package: 'WKHTML2PDF-Tests-Core' with: [
+				spec requires: #('WKHTML2PDF-Core' ). ].
+		spec 
+			group: 'default' with: #('Core' 'Tests' );
+			group: 'Core' with: #('WKHTML2PDF-Core' );
+			group: 'Tests' with: #('WKHTML2PDF-Tests-Core' ). ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -213,7 +305,7 @@ ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 ConfigurationOfWKHTML2PDF >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.1-baseline'.
+	spec for: #'common' version: '0.3-baseline'.
 
 ]
 
@@ -234,7 +326,7 @@ ConfigurationOfWKHTML2PDF >> project [
 ConfigurationOfWKHTML2PDF >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.0'.
+	spec for: #'common' version: '2.0'.
 
 ]
 
@@ -248,6 +340,22 @@ ConfigurationOfWKHTML2PDF >> version10: spec [
 		spec author: 'TorstenBergmann'.
 		spec timestamp: '12/19/2014 10:39'.
 		spec project: 'OSProcess' with: '4.5.12'.
+		spec 
+			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.14';
+			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfWKHTML2PDF >> version20: spec [
+	<version: '2.0' imports: #('0.2-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 2.0'.
+		spec author: 'TorstenBergmann'.
+		spec timestamp: '24/9/2015 10:39'.
+		spec project: 'OSProcess' with: #'stable'.
 		spec 
 			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.14';
 			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
