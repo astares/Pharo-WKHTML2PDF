@@ -21,9 +21,9 @@ WKPDFConstants class >> initTypes [
 	wkhtmltopdf_global_settings := #WKPDFGlobalSettings.
 	wkhtmltopdf_object_settings := #WKPDFObjectSettings.
 	wkhtmltopdf_converter := #WKPDFConverter.
-	wkhtmltopdf_str_callback := #WKPDFStringCallback.
-	wkhtmltopdf_void_callback := #WKPDFVoidCallback.
-	wkhtmltopdf_int_callback := #WKPDFIntCallback
+	wkhtmltopdf_str_callback := #FFICallback.
+	wkhtmltopdf_void_callback := #FFICallback.
+	wkhtmltopdf_int_callback := #FFICallback 
 ]
 
 { #category : #initialization }
