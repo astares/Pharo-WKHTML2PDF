@@ -293,6 +293,30 @@ ConfigurationOfWKHTML2PDF >> baseline03: spec [
 
 ]
 
+{ #category : #baselines }
+ConfigurationOfWKHTML2PDF >> baseline04: spec [
+	<version: '0.4-baseline'>
+
+	spec for: #'common' do: [
+		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/TorstenBergmann/WKHTML2PDF/main/'.
+		spec project: 'OSProcess' with: [
+				spec
+					className: #ConfigurationOfOSProcess;
+					versionString: #'stable';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+		spec 
+			package: 'WKHTML2PDF-Core' with: [
+				spec requires: #('OSProcess' ). ];
+			package: 'WKHTML2PDF-Tests-Core' with: [
+				spec requires: #('WKHTML2PDF-Core' ). ].
+		spec 
+			group: 'default' with: #('Core' 'Tests' );
+			group: 'Core' with: #('WKHTML2PDF-Core' );
+			group: 'Tests' with: #('WKHTML2PDF-Tests-Core' ). ].
+
+]
+
 { #category : #accessing }
 ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 	 "Edit to return a collection of any custom attributes e.g. for conditional loading: Array with: #'Condition1' with: #'Condition2.
@@ -305,7 +329,7 @@ ConfigurationOfWKHTML2PDF >> customProjectAttributes [
 ConfigurationOfWKHTML2PDF >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'common' version: '0.3-baseline'.
+	spec for: #'common' version: '0.4-baseline'.
 
 ]
 
@@ -326,7 +350,9 @@ ConfigurationOfWKHTML2PDF >> project [
 ConfigurationOfWKHTML2PDF >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '2.0'.
+	spec for: #'common' version: '3.0'.
+	spec for: #'pharo3.x' version: '2.0'. 
+	spec for: #'pharo4.x' version: '2.0'.
 
 ]
 
@@ -358,6 +384,22 @@ ConfigurationOfWKHTML2PDF >> version20: spec [
 		spec project: 'OSProcess' with: #'stable'.
 		spec 
 			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.14';
+			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfWKHTML2PDF >> version30: spec [
+	<version: '3.0' imports: #('0.3-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'stable'.
+		spec description: 'version 3.0'.
+		spec author: 'TorstenBergmann'.
+		spec timestamp: '24/9/2015 10:39'.
+		spec project: 'OSProcess' with: #'stable'.
+		spec 
+			package: 'WKHTML2PDF-Core' with: 'WKHTML2PDF-Core-TorstenBergmann.20';
 			package: 'WKHTML2PDF-Tests-Core' with: 'WKHTML2PDF-Tests-Core-TorstenBergmann.1'. ].
 
 ]
