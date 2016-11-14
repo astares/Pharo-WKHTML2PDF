@@ -154,14 +154,14 @@ WKPDFLibrary class >> setErrorCallback: cb onConverter: converter [
 { #category : #'private - api - settings' }
 WKPDFLibrary class >> setGlobalSetting: aName to: value in: settings [
 
-	 ^self ffiCall: #(int wkhtmltopdf_set_global_setting(wkhtmltopdf_global_settings* settings, String aName, String value)) module: 'wkhtmltox.dll' 	
+	 ^self ffiCall: #(int wkhtmltopdf_set_global_setting(wkhtmltopdf_global_settings settings, String aName, String value)) module: 'wkhtmltox.dll' 	
 ]
 
 { #category : #'private - api - settings' }
 WKPDFLibrary class >> setObjectSetting: aName to: value in: settings [
 
  
-	 ^self ffiCall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings* settings, String aName, String value)) module: 'wkhtmltox.dll' 	
+	 ^self ffiCall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings settings, String aName, String value)) module: 'wkhtmltox.dll' 	
 ]
 
 { #category : #'private - api - callbacks' }
