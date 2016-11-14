@@ -91,22 +91,23 @@ WKPDFLibrary class >> exampleWithCallbacks [
 	| globalSettings objectSettings converter cb phaseCallback |
 	self init: 0.
 	globalSettings := self createGlobalSettings.
-	self setGlobalSetting: 'out' to: 'c:\temp\pharo.pdf' in: globalSettings.
+	self setGlobalSetting: 'out' to: 'pharo_with_callback.pdf' in: globalSettings.
 	objectSettings := self createObjectSettings.
 	self setObjectSetting: 'page' to: 'http://www.pharo.org' in: objectSettings.
 	converter := self createConverter: globalSettings.
 	
 	cb := FFICallback  
-				signature: #(void (WKPDFConverter* converter, String str))
+				signature: #(void (WKPDFConverter converter, String str))
 				block: [ :con :m | Transcript show: m readString; flush ].
 		self setErrorCallback: cb onConverter: converter.
 		self setWarningCallback: cb onConverter: converter.
 	
 	phaseCallback := FFICallback 
-							 signature: #(void (WKPDFConverter* converter))
+							 signature: #(void (WKPDFConverter converter))
 							 block:  [ :con | 
-								|description|
-								description := self getPhaseDescription: con  forPhase: (self getCurrentPhase: con).			
+								|description cvt|
+								cvt := WKPDFConverter fromHandle:con.
+								description := self getPhaseDescription: cvt forPhase: (self getCurrentPhase: cvt).			
 								Transcript show: description; cr; flush ].
 						
 	self setPhaseChangedCallback: phaseCallback onConverter: converter.
@@ -132,7 +133,7 @@ WKPDFLibrary class >> getHTTPErrorCode: converter [
 { #category : #'private - api - accessing' }
 WKPDFLibrary class >> getPhaseDescription: converter forPhase: phase [
 
-	 ^self ffiCall: #(String wkhtmltopdf_phase_description(wkhtmltopdf_converter* converter, int phase)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(String wkhtmltopdf_phase_description(wkhtmltopdf_converter converter, int phase)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - initialization' }
