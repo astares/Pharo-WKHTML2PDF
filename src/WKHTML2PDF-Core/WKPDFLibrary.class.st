@@ -10,18 +10,18 @@ Class {
 	#category : #'WKHTML2PDF-Core-Engines-Library'
 }
 
-{ #category : #'private - api' }
+{ #category : #adding }
 WKPDFLibrary class >> addObject: converter to: settings [
 
 	 
 	
-	 ^self ffiCall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter* converter, wkhtmltopdf_object_settings* settings, 0)) module: 'wkhtmltox.dll' options: #( - optCoerceNilToNull )
+	 ^self ffiCall: #(void wkhtmltopdf_add_object(wkhtmltopdf_converter converter, wkhtmltopdf_object_settings settings, 0)) module: 'wkhtmltox.dll' options: #( - optCoerceNilToNull )
 ]
 
-{ #category : #'private - api' }
+{ #category : #actions }
 WKPDFLibrary class >> convert: converter [
 
-	 ^self ffiCall: #(int wkhtmltopdf_convert(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(int wkhtmltopdf_convert(wkhtmltopdf_converter converter)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #conversion }
@@ -44,15 +44,13 @@ WKPDFLibrary class >> convert: url toFile: fileName [
 	^conversionResult = 1 
 		ifTrue: [ true ]
 		ifFalse: [ errorCode ]
-
-
 ]
 
 { #category : #'private - api' }
 WKPDFLibrary class >> createConverter: settings [
 
 	 
-	 ^self ffiCall: #(wkhtmltopdf_converter* wkhtmltopdf_create_converter(wkhtmltopdf_global_settings* settings)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(wkhtmltopdf_converter* wkhtmltopdf_create_converter(wkhtmltopdf_global_settings settings)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - settings' }
@@ -78,7 +76,7 @@ WKPDFLibrary class >> deinit [
 WKPDFLibrary class >> destroyConverter: converter [
 
 	 
-	 ^self ffiCall: #(void wkhtmltopdf_destroy_converter(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(void wkhtmltopdf_destroy_converter(wkhtmltopdf_converter converter)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #examples }
