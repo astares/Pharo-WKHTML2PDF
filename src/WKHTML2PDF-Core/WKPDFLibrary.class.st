@@ -120,7 +120,7 @@ WKPDFLibrary class >> exampleWithCallbacks [
 WKPDFLibrary class >> getCurrentPhase: converter [
 
 	 
-	 ^self ffiCall: #(int wkhtmltopdf_current_phase(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(int wkhtmltopdf_current_phase(wkhtmltopdf_converter converter)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - accessing' }
@@ -146,7 +146,7 @@ WKPDFLibrary class >> init: use_graphics [
 { #category : #'private - api - callbacks' }
 WKPDFLibrary class >> setErrorCallback: cb onConverter: converter [
 
-	 ^self ffiCall: #(void* wkhtmltopdf_set_error_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(void* wkhtmltopdf_set_error_callback(wkhtmltopdf_converter converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - settings' }
