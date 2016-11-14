@@ -162,14 +162,14 @@ WKPDFLibrary class >> setObjectSetting: aName to: value in: settings [
 	 ^self ffiCall: #(int wkhtmltopdf_set_object_setting(wkhtmltopdf_object_settings settings, String aName, String value)) module: 'wkhtmltox.dll' 	
 ]
 
-{ #category : #'private - api - callbacks' }
+{ #category : #initialization }
 WKPDFLibrary class >> setPhaseChangedCallback: cb onConverter: converter [
 
-	 ^self ffiCall: #(void* wkhtmltopdf_set_phase_changed_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_void_callback cb)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(void* wkhtmltopdf_set_phase_changed_callback(wkhtmltopdf_converter converter, wkhtmltopdf_void_callback cb)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - callbacks' }
 WKPDFLibrary class >> setWarningCallback: cb onConverter: converter [
 	 
-	 ^self ffiCall: #(void* wkhtmltopdf_set_warning_callback(wkhtmltopdf_converter* converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
+	 ^self ffiCall: #(void* wkhtmltopdf_set_warning_callback(wkhtmltopdf_converter converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
 ]
