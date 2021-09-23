@@ -3,7 +3,7 @@ Represents the WKPDF shared library
 "
 Class {
 	#name : #WKPDFLibrary,
-	#superclass : #Object,
+	#superclass : #FFILibrary,
 	#pools : [
 		'WKPDFConstants'
 	],
@@ -27,23 +27,7 @@ WKPDFLibrary class >> convert: converter [
 { #category : #conversion }
 WKPDFLibrary class >> convert: url toFile: fileName [
 
-	| globalSettings objectSettings converter  conversionResult errorCode |
-
-	self init: 0.
-	globalSettings := self createGlobalSettings.
-	self setGlobalSetting: 'out' to: fileName in: globalSettings.
-	objectSettings := self createObjectSettings.
-	self setObjectSetting: 'page' to: url in: objectSettings.
-	converter := self createConverter: globalSettings.
-	self addObject: converter to: objectSettings.
-	conversionResult := self convert: converter.
-	conversionResult = 1 ifFalse: [ errorCode := self getHTTPErrorCode: converter ].
-	self destroyConverter: converter.
-	self deinit.
-	
-	^conversionResult = 1 
-		ifTrue: [ true ]
-		ifFalse: [ errorCode ]
+	^self uniqueInstance convert: url toFile: fileName
 ]
 
 { #category : #'private - api' }
@@ -54,12 +38,6 @@ WKPDFLibrary class >> createConverter: settings [
 ]
 
 { #category : #'private - api - settings' }
-WKPDFLibrary class >> createGlobalSettings [
-
-	 ^self ffiCall: #(wkhtmltopdf_global_settings* wkhtmltopdf_create_global_settings()) module: 'wkhtmltox.dll' 
-]
-
-{ #category : #'private - api - settings' }
 WKPDFLibrary class >> createObjectSettings [
 
 	 ^self ffiCall: #(wkhtmltopdf_object_settings* wkhtmltopdf_create_object_settings()) module: 'wkhtmltox.dll' 
@@ -67,7 +45,6 @@ WKPDFLibrary class >> createObjectSettings [
 
 { #category : #'private - api - initialization' }
 WKPDFLibrary class >> deinit [
-
 	 
 	 ^self ffiCall: #(int wkhtmltopdf_deinit()) module: 'wkhtmltox.dll' 
 ]
@@ -127,21 +104,13 @@ WKPDFLibrary class >> getCurrentPhase: converter [
 { #category : #'private - api - accessing' }
 WKPDFLibrary class >> getHTTPErrorCode: converter [
 
-	^self ffiCall: #(int wkhtmltopdf_http_error_code(wkhtmltopdf_converter* converter)) module: 'wkhtmltox.dll' 
+	^self ffiCall: #(int wkhtmltopdf_http_error_code(wkhtmltopdf_converter* converter))  
 ]
 
 { #category : #'private - api - accessing' }
 WKPDFLibrary class >> getPhaseDescription: converter forPhase: phase [
 
 	 ^self ffiCall: #(String wkhtmltopdf_phase_description(wkhtmltopdf_converter converter, int phase)) module: 'wkhtmltox.dll' 
-]
-
-{ #category : #'private - api - initialization' }
-WKPDFLibrary class >> init: use_graphics [
-
-	<primitive: #primitiveNativeCall module: #NativeBoostPlugin>
-	
-	 ^self ffiCall: #(int wkhtmltopdf_init(int use_graphics)) module: 'wkhtmltox.dll' 
 ]
 
 { #category : #'private - api - callbacks' }
@@ -173,4 +142,45 @@ WKPDFLibrary class >> setPhaseChangedCallback: cb onConverter: converter [
 WKPDFLibrary class >> setWarningCallback: cb onConverter: converter [
 	 
 	 ^self ffiCall: #(void* wkhtmltopdf_set_warning_callback(wkhtmltopdf_converter converter, wkhtmltopdf_str_callback cb)) module: 'wkhtmltox.dll' 
+]
+
+{ #category : #conversion }
+WKPDFLibrary >> convert: url toFile: fileName [
+
+	| globalSettings objectSettings converter  conversionResult errorCode |
+
+	self init: 0.
+	globalSettings := self createGlobalSettings.
+	self setGlobalSetting: 'out' to: fileName in: globalSettings.
+	objectSettings := self createObjectSettings.
+	self setObjectSetting: 'page' to: url in: objectSettings.
+	converter := self createConverter: globalSettings.
+	self addObject: converter to: objectSettings.
+	conversionResult := self convert: converter.
+	conversionResult = 1 ifFalse: [ errorCode := self getHTTPErrorCode: converter ].
+	self destroyConverter: converter.
+	self deinit.
+	
+	^conversionResult = 1 
+		ifTrue: [ true ]
+		ifFalse: [ errorCode ]
+]
+
+{ #category : #'private - api - settings' }
+WKPDFLibrary >> createGlobalSettings [
+
+	 ^ self ffiCall: #(wkhtmltopdf_global_settings* wkhtmltopdf_create_global_settings())
+]
+
+{ #category : #'private - api - initialization' }
+WKPDFLibrary >> init: useGraphics [
+
+	 ^self ffiCall: #(int wkhtmltopdf_init(int useGraphics))
+]
+
+{ #category : #'accessing - platform' }
+WKPDFLibrary >> win32LibraryName [
+
+	^ FFIWindowsLibraryFinder findAnyLibrary: #('wkhtmltox.dll')
+
 ]
