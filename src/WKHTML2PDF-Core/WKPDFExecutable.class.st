@@ -20,7 +20,7 @@ WKPDFExecutable class >> convert: url toFile: fileName [
 WKPDFExecutable class >> runWKHTMLWithOptions: options [
 
 	Smalltalk os isWin32 
-		ifTrue: [ ^ OSProcess command: 'wkhtmltopdf.exe ', options ].
+		ifTrue: [ ^ LibC system: 'wkhtmltopdf.exe ', options ].
 	Smalltalk os isUnix 
-		ifTrue: [ ^  OSProcess command: 'wkhtmltopdf ', options ]
+		ifTrue: [ ^  LibC system: 'wkhtmltopdf ', options ]
 ]
