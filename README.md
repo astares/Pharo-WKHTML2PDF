@@ -44,21 +44,27 @@ To install the packages manually into your Pharo image just evaluate:
 ### Selecting the engine
 Initially you have to select the engine that you want to use. Either you want to use the WKHTML2PDF library or the executable.
 
-	HTML2PDFConverter useExecutable. 
+```Smalltalk
+HTML2PDFConverter useExecutable
+```
 
 or 
 
-	HTML2PDFConverter useLibrary. 
+```Smalltalk
+HTML2PDFConverter useLibrary. 
+```
 
 The executable is the default.
 
 ### Converting
 Now you can convert an HTML file or an URL into a PDF document:
 
-	HTML2PDFConverter 
-			convert: 'http://www.pharo.org'
-		    toFile: 'pharo.pdf'
-	
+```Smalltalk
+HTML2PDFConverter 
+	convert: 'http://www.pharo.org'
+	toFile: 'pharo.pdf'
+```
+
 will convert the Pharo homepage to a pdf document.
 		
 # Packages
@@ -68,8 +74,3 @@ will convert the Pharo homepage to a pdf document.
 
 # Testing
 The package comes with tests in the package ***WKHTML2PDF-Tests-Core***. Just use the SUnit TestRunner to run them.
-
- 
-   
- 
- 
