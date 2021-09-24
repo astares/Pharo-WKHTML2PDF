@@ -36,12 +36,13 @@ WKPDFLibrary class >> example [
 { #category : #examples }
 WKPDFLibrary class >> exampleWithCallbacks [
 
+	Transcript open.
 	self 
 		convert: 'http://www.pharo.org' 
 		toFile: 'pharo_with_callback.pdf' 
-		callback: [ :con :phase | Transcript show: phase; flush ] 
-		onError: [ :con :msg | Transcript show: msg readString; flush ]
-		onWarning: [ :con :msg | Transcript show: msg readString; flush ]
+		callback: [ :con :phase | Transcript show: phase; flush;cr ] 
+		onError: [ :con :msg | Transcript show: msg readString; flush;cr ]
+		onWarning: [ :con :msg | Transcript show: msg readString; flush;cr ]
 
 	
 ]
