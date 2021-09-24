@@ -8,7 +8,7 @@ Class {
 	#classVars : [
 		'Engine'
 	],
-	#category : #'WKHTML2PDF-Core-Basic'
+	#category : #'WKHTML2PDF-Core-Base'
 }
 
 { #category : #conversion }
@@ -30,7 +30,7 @@ HTML2PDFConverter class >> example [
 	       toFile: 'pharo.pdf'
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 HTML2PDFConverter class >> initialize [
 
 	self useExecutable 

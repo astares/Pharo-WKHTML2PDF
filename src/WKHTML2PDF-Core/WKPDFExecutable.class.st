@@ -4,7 +4,7 @@ The WKPDF executable
 Class {
 	#name : #WKPDFExecutable,
 	#superclass : #Object,
-	#category : #'WKHTML2PDF-Core-Engines-Executable'
+	#category : #'WKHTML2PDF-Core-Engine-Executable'
 }
 
 { #category : #converting }

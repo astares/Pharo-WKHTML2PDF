@@ -7,7 +7,7 @@ Class {
 	#pools : [
 		'WKPDFConstants'
 	],
-	#category : #'WKHTML2PDF-Core-Engines-Library'
+	#category : #'WKHTML2PDF-Core-Engine-Library'
 }
 
 { #category : #converting }
@@ -19,7 +19,7 @@ WKPDFLibrary class >> convert: url toFile: fileName [
 { #category : #converting }
 WKPDFLibrary class >> convert: url toFile: fileName callback: aBlock [
 
-	^self uniqueInstance convert: url toFile: fileName callBack: aBlock
+	^self uniqueInstance convert: url toFile: fileName callback: aBlock
 ]
 
 { #category : #examples }
@@ -70,7 +70,7 @@ WKPDFLibrary >> convert: url toFile: fileName [
 ]
 
 { #category : #converting }
-WKPDFLibrary >> convert: url toFile: fileName callBack: aTwoArgumentBlock [
+WKPDFLibrary >> convert: url toFile: fileName callback: aTwoArgumentBlock [
 
 	| globalSettings objectSettings converter cb phaseCallback |
 	self init: 0.

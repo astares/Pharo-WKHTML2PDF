@@ -4,7 +4,7 @@ global settings
 Class {
 	#name : #HTML2PDFGlobalSettings,
 	#superclass : #HTML2PDFSettings,
-	#category : #'WKHTML2PDF-Core-Basic-Settings'
+	#category : #'WKHTML2PDF-Core-Base-Settings'
 }
 
 { #category : #options }

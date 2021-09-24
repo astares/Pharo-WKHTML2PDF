@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'options'
 	],
-	#category : #'WKHTML2PDF-Core-Basic-Settings'
+	#category : #'WKHTML2PDF-Core-Base-Settings'
 }
 
 { #category : #initialization }

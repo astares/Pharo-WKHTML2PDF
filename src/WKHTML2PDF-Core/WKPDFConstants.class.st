@@ -12,7 +12,7 @@ Class {
 		'wkhtmltopdf_str_callback',
 		'wkhtmltopdf_void_callback'
 	],
-	#category : #'WKHTML2PDF-Core-Component-Structs'
+	#category : #'WKHTML2PDF-Core-Engine-Utilities'
 }
 
 { #category : #'private - initialization' }
@@ -26,12 +26,8 @@ WKPDFConstants class >> initTypes [
 	wkhtmltopdf_int_callback := #FFICallback 
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 WKPDFConstants class >> initialize [ 
-	"Initializes the receiver class
-	
-		self initialize
-	"
-	
+
 	self initTypes
 ]
