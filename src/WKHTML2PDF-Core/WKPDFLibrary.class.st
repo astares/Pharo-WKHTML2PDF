@@ -22,9 +22,9 @@ WKPDFLibrary class >> convert: url toFile: fileName callback: aBlock onError: er
 	^self uniqueInstance 
 		convert: url 
 		toFile: fileName
-		callback: [ :con :phase | Transcript show: phase readString; flush ] 
-		onError: [ :con :msg | Transcript show: msg readString; flush ]
-		onWarning: [ :con :msg | Transcript show: msg readString; flush ]
+		callback: aBlock
+		onError: errorBlock
+		onWarning: warningBlock
 ]
 
 { #category : #examples }
