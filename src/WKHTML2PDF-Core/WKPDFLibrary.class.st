@@ -17,9 +17,14 @@ WKPDFLibrary class >> convert: url toFile: fileName [
 ]
 
 { #category : #converting }
-WKPDFLibrary class >> convert: url toFile: fileName callback: aBlock [
+WKPDFLibrary class >> convert: url toFile: fileName callback: aBlock onError: errorBlock onWarning: warningBlock [
 
-	^self uniqueInstance convert: url toFile: fileName callback: aBlock
+	^self uniqueInstance 
+		convert: url 
+		toFile: fileName
+		callback: [ :con :phase | Transcript show: phase readString; flush ] 
+		onError: [ :con :msg | Transcript show: msg readString; flush ]
+		onWarning: [ :con :msg | Transcript show: msg readString; flush ]
 ]
 
 { #category : #examples }
@@ -31,7 +36,13 @@ WKPDFLibrary class >> example [
 { #category : #examples }
 WKPDFLibrary class >> exampleWithCallbacks [
 
-	self convert: 'http://www.pharo.org' toFile: 'pharo_with_callback.pdf' callback: [ :con :m | Transcript show: m readString; flush ]
+	self 
+		convert: 'http://www.pharo.org' 
+		toFile: 'pharo_with_callback.pdf' 
+		callback: [ :con :phase | Transcript show: phase; flush ] 
+		onError: [ :con :msg | Transcript show: msg readString; flush ]
+		onWarning: [ :con :msg | Transcript show: msg readString; flush ]
+
 	
 ]
 
@@ -70,30 +81,39 @@ WKPDFLibrary >> convert: url toFile: fileName [
 ]
 
 { #category : #converting }
-WKPDFLibrary >> convert: url toFile: fileName callback: aTwoArgumentBlock [
+WKPDFLibrary >> convert: url toFile: fileName callback: aTwoArgumentBlock onError: anErrorBlock onWarning: aWarningBlock [
 
-	| globalSettings objectSettings converter cb phaseCallback |
+	| globalSettings objectSettings converter errorCallback phaseCallback warningCallback |
 	self init: 0.
 	globalSettings := self createGlobalSettings.
 	self setGlobalSetting: 'out' to: fileName in: globalSettings.
 	objectSettings := self createObjectSettings.
 	self setObjectSetting: 'page' to: url in: objectSettings.
 	converter := self createConverter: globalSettings.
-	
-	cb := FFICallback  
-				signature: #(void (WKPDFConverter converter, String str))
-				block: aTwoArgumentBlock.
-		self setErrorCallback: cb onConverter: converter.
-		self setWarningCallback: cb onConverter: converter.
-	
-	phaseCallback := FFICallback 
-							 signature: #(void (WKPDFConverter converter))
-							 block:  [ :con | 
-								|description cvt|
-								cvt := WKPDFConverter fromHandle:con.
-								description := self getPhaseDescription: cvt forPhase: (self getCurrentPhase: cvt).			
-								Transcript show: description; cr; flush ].
-						
+
+	warningCallback := FFICallback
+		                   signature:
+		                   #( void #(WKPDFConverter converter, String str ) )
+		                   block: aWarningBlock.
+	self setWarningCallback: warningCallback onConverter: converter.
+
+	errorCallback := FFICallback
+		                 signature:
+		                 #( void #(WKPDFConverter converter, String str ) )
+		                 block: anErrorBlock.
+	self setErrorCallback: errorCallback onConverter: converter.
+
+	phaseCallback := FFICallback
+		                 signature: #( void #( WKPDFConverter converter ) )
+		                 block: [ :con | 
+			                 | description cvt |
+			                 cvt := WKPDFConverter fromHandle: con.
+			                 description := self
+				                                getPhaseDescription: cvt
+				                                forPhase:
+				                                (self getCurrentPhase: cvt).
+								aTwoArgumentBlock value: cvt value: description ].
+
 	self setPhaseChangedCallback: phaseCallback onConverter: converter.
 	self addObject: converter to: objectSettings.
 	self convert: converter.
